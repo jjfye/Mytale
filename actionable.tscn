@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://csg4ce75kipt0"]
+
+[ext_resource type="Script" path="res://Actionable.gd" id="1_pv4qo"]
+[ext_resource type="Resource" uid="uid://cpe1emvniqi1n" path="res://dialogue/main.dialogue" id="2_o5rxf"]
+
+[node name="Actionable" type="Area2D"]
+script = ExtResource("1_pv4qo")
+dialogue_resource = ExtResource("2_o5rxf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://d0hvvqfvih4ic"]
+
+[ext_resource type="PackedScene" uid="uid://bir1w8mt0ugu4" path="res://player/player.tscn" id="1_1n0q5"]
+[ext_resource type="PackedScene" uid="uid://4puo8uktagav" path="res://characters/joose.tscn" id="2_lf5wu"]
+[ext_resource type="PackedScene" uid="uid://b37if6dffgj06" path="res://polygon_2d.tscn" id="2_mf0o2"]
+[ext_resource type="PackedScene" uid="uid://csg4ce75kipt0" path="res://actionable.tscn" id="3_hplu5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fre6s"]
+radius = 32.9848
+
+[node name="World" type="Node2D"]
+
+[node name="player" parent="." instance=ExtResource("1_1n0q5")]
+position = Vector2(277, 211)
+
+[node name="Joose" parent="." instance=ExtResource("2_lf5wu")]
+position = Vector2(960, 440)
+collision_mask = 0
+
+[node name="Actionable" parent="Joose" instance=ExtResource("3_hplu5")]
+
+[node name="CollisionShape2D" parent="Joose/Actionable" index="0"]
+shape = SubResource("CircleShape2D_fre6s")
+
+[node name="Polygon2D" parent="." instance=ExtResource("2_mf0o2")]
+position = Vector2(22.6421, 21.5049)
+polygon = PackedVector2Array(-22.6421, -21.5049, 41.3579, -21.5049, 41.3579, 490.495, 993.358, 490.495, 993.358, 298.495, 1273.36, 298.495, 1273.36, 650.495, -46.6421, 650.495, -46.6421, -21.5049)
+
+[editable path="Joose/Actionable"]
+[editable path="Polygon2D"]

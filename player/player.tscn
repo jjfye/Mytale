@@ -1,0 +1,156 @@
+[gd_scene load_steps=18 format=3 uid="uid://bir1w8mt0ugu4"]
+
+[ext_resource type="Texture2D" uid="uid://dk1bd1bxnq0ki" path="res://Sprites/Player.png" id="1_0gsss"]
+[ext_resource type="Script" path="res://player/player.gd" id="1_x7kxh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0pl6d"]
+radius = 15.0
+height = 40.0
+
+[sub_resource type="Animation" id="Animation_3wtrq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Direction:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_b3dh4"]
+resource_name = "down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Direction:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7wk3h"]
+resource_name = "left"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Direction:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5708]
+}
+
+[sub_resource type="Animation" id="Animation_7ts4s"]
+resource_name = "right"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Direction:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.5708]
+}
+
+[sub_resource type="Animation" id="Animation_3a5pc"]
+resource_name = "up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Direction:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.14159]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iq7mg"]
+_data = {
+"RESET": SubResource("Animation_3wtrq"),
+"down": SubResource("Animation_b3dh4"),
+"left": SubResource("Animation_7wk3h"),
+"right": SubResource("Animation_7ts4s"),
+"up": SubResource("Animation_3a5pc")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qcx0y"]
+animation = &"left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cqmrr"]
+animation = &"right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vklbd"]
+animation = &"up"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_slujp"]
+animation = &"down"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_hwk0s"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_qcx0y")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_cqmrr")
+blend_point_1/pos = Vector2(1, 0)
+blend_point_2/node = SubResource("AnimationNodeAnimation_vklbd")
+blend_point_2/pos = Vector2(0, -0.9)
+blend_point_3/node = SubResource("AnimationNodeAnimation_slujp")
+blend_point_3/pos = Vector2(0, 1)
+blend_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_plusi"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_hlv5p"]
+states/Idle/node = SubResource("AnimationNodeBlendSpace2D_hwk0s")
+states/Idle/position = Vector2(405, 100)
+states/Start/position = Vector2(201, 100)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_plusi")]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6d6pr"]
+radius = 14.0
+
+[node name="player" type="CharacterBody2D"]
+script = ExtResource("1_x7kxh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_0gsss")
+offset = Vector2(-4, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16)
+shape = SubResource("CapsuleShape2D_0pl6d")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_iq7mg")
+}
+tree_root = SubResource("AnimationNodeStateMachine_hlv5p")
+parameters/Idle/blend_position = Vector2(0.0976, 0.0396476)
+
+[node name="Direction" type="Marker2D" parent="."]
+position = Vector2(0, -14)
+
+[node name="ActionableFinder" type="Area2D" parent="Direction"]
+position = Vector2(0, -6)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Direction/ActionableFinder"]
+position = Vector2(0, 30)
+shape = SubResource("CircleShape2D_6d6pr")

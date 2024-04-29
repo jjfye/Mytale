@@ -1,0 +1,9 @@
+~ start
+
+Joose: [[Hi|Hello|Howdy]], im joose.
+Joose: what do you want...?
+- Start again => start
+- End the conversation
+	Joose: ok bye.
+	
+=> END
